@@ -1,6 +1,6 @@
 
 public class Virus {
-	public int team() { }
+	public int player() {}
 	
 	public boolean waiting() {}
 	
@@ -13,4 +13,9 @@ public class Virus {
 	public void turnL() { }
 	
 	public void progress() { }
+	
+	private int player;
+	private int waitTime;
+	private Coordinates coordinates;
+	private Direction direction;
 }

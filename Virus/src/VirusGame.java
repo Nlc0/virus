@@ -3,12 +3,21 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 
 
-// TODO Faire autant de teams qu'on veut
+// TODO Gérer les teams
 public class VirusGame {
 	private static final int TIME_OUT = 100;
 	
-	
 	public VirusGame (ArrayList<ArrayList<GeneticStep>> geneticCodes) {
+		timer = 0;
+		nbPlayers = geneticCodes.size();
+		
+		private Hashtable<Coordinates, Virus> map;
+		
+		private LinkedList<Virus> bank;
+		
+		ArrayList<Integer> scores = new ArrayList<Integer>();
+		
+		geneticCodes = new ArrayList<ArrayList<GeneticStep>>();
 		for (int i = 0 ; i != geneticCodes.size() ; i++) {
 			this.geneticCodes.add(new ArrayList<GeneticStep>());
 			for (int j = 0 ; j != geneticCodes.get(i).size() ; j++) {
@@ -21,8 +30,8 @@ public class VirusGame {
 		return !map.contains(c);
 	}
 	
-	public int cellTeam(Coordinates c) {
-		return map.get(c).team();
+	public int cellPlayer(Coordinates c) {
+		return map.get(c).player();
 	}
 	
 	public int remainingTime() {
@@ -30,14 +39,14 @@ public class VirusGame {
 	}
 	
 	public int nbPlayers() {
-		return geneticCodes.size();
+		return nbPlayers;
 	}
 	
-	// Requirement :: !gameOver()
+	// Requires !gameOver()
 	public void play() {
 		for (Virus v : bank ) {
 			if (!v.waiting()) {
-				GeneticStep s = geneticCodes.get(v.team()).get(v.step());
+				GeneticStep s = geneticCodes.get(v.player()).get(v.step());
 				if (GeneticStep.MOVE.equals(s)) 
 					v.move(1);
 				else if (GeneticStep.TURN_R.equals(s))
@@ -53,28 +62,31 @@ public class VirusGame {
 	public boolean gameOver() {
 		return timer >= TIME_OUT;
 	}
-	
-	public 
-	
-	
+
 	// Retourne 0 si on est encore en train de jouer
 	// 1 si le joueur 1 a gagné
 	// 2 si le joueur 2 a gagné
 	// X si le joueur X a gagné
 	// Gérer le cas d'égalité
-	public int gameState() {
-		if (timer < TIME_OUT)
-			return 0;
-		Hashtable<Integer, Integer> scores = new Hashtable<Integer, Integer>();
-		for (Virus v : bank) {
-			scores.put(v.team(), scores.get(v.team()) + 1);
+	// Requires gameOver()
+	public int winner() {
+		int max = 0;
+		int iMax = 0;
+		for (int i = 0 ; i != scores.size() ; i++){
+			int s = scores.get(i);
+			if (s > max) {
+				max = s;
+				iMax = i;
+			}
 		}
-		return max(scores) + 1;
-	}
+		return iMax;
+	}	
 	
 	private Hashtable<Coordinates, Virus> map;
 	private LinkedList<Virus> bank;
 	private ArrayList<ArrayList<GeneticStep>> geneticCodes;
+	private ArrayList<Integer> scores;
 	
 	private int timer;
+	private int nbPlayers;
 }
