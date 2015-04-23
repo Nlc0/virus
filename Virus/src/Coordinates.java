@@ -1,7 +1,7 @@
 
 public class Coordinates {
 	
-	public int x() {
+	public int x () {
 		return x;
 	}
 	
