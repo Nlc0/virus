@@ -1,5 +1,16 @@
 
 public class Virus {
-	int team() { return 0;}
+	public int team() { }
+	
+	public boolean waiting() {}
+	
+	public int step() { }
 
+	public void move(int n) { }
+	
+	public void turnR() { }
+	
+	public void turnL() { }
+	
+	public void progress() { }
 }
