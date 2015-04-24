@@ -10,44 +10,15 @@ public class Virus {
 		this.step = 0;
 	}
 	
-	public int player() {
-		return player;
-	}
+	public int player() { return player; }
 	
-	public boolean waiting() {
-		return waitTime > 0;
-	}
+	public boolean waiting() { return waitTime > 0; }
 	
-	public int step() { 
-		return step;
-	}
+	public Coordinates coordinates() { return this.coordinates; }
+	
+	public int step() { return step; }
 
-	public void move(int n) {
-		if (Direction.RIGHT.equals(direction)) {
-			if (this.coordinates.x() == game.mapMaxX())
-				this.coordinates.setX(game.mapMinX());
-			else if (game.emptyCell(new Coordinates(this.coordinates.x() + 1, this.coordinates.y())))
-				this.coordinates.setX(coordinates.x() + 1);
-		}
-		else if (Direction.UP.equals(direction)) {
-			if (this.coordinates.y() == game.mapMinY())
-				this.coordinates.setY(game.mapMaxY());
-			else if (game.emptyCell(new Coordinates(this.coordinates.x(), this.coordinates.y() - 1)))
-				this.coordinates.setY(coordinates.y() - 1);
-		}
-		else if (Direction.LEFT.equals(direction)) {
-			if (this.coordinates.x() == game.mapMinX())
-				this.coordinates.setX(game.mapMaxX());
-			else if (game.emptyCell(new Coordinates(this.coordinates.x() - 1, this.coordinates.y())))
-				this.coordinates.setX(coordinates.x() - 1);
-		}
-		else if (Direction.DOWN.equals(direction)) {
-			if (this.coordinates.y() == game.mapMaxY())
-				this.coordinates.setY(game.mapMinY());
-			else if (game.emptyCell(new Coordinates(this.coordinates.x(), this.coordinates.y() + 1)))
-				this.coordinates.setY(coordinates.y() + 1);
-		}
-	}
+	public Direction direction() { return this.direction; }
 	
 	public void turnR() {
 		if (Direction.RIGHT.equals(direction))

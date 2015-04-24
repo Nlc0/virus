@@ -16,22 +16,24 @@ public class Main {
 		
 		Coordinates c = new Coordinates(1,1);
 		
-		System.out.println(game.cellPlayer(c));
+		//System.out.println(game.cellPlayer(c));
 
 		printMap(game);
 		
-		/*while (!game.gameOver()) {
+		
+		while (!game.gameOver()) {
 			printMap(game);
+			System.out.println("");
 			game.play();
-		}*/
+		}
 	}
 	
 	public static void printMap(VirusGame game) {
-		for (int i = game.mapMinX() ; i != game.mapMaxX() + 1 ; i++) {
-			for (int j = game.mapMinY() ; j != game.mapMaxY() + 1 ; j++) {
+		for (int i = game.mapMinY() ; i != game.mapMaxY() + 1 ; i++) {
+			for (int j = game.mapMinX() ; j != game.mapMaxX() + 1 ; j++) {
 				Coordinates c = new Coordinates(j, i);
 				if (game.emptyCell(c))
-					System.out.print(" ");
+					System.out.print("X");
 				else
 					System.out.print(game.cellPlayer(c));
 			}

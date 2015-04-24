@@ -13,8 +13,8 @@ public class VirusGame {
 	private static final int START_PLAYER_0_Y = 1;
 	private static final Direction START_PLAYER_0_D = Direction.UP;
 	
-	private static final int START_PLAYER_1_X = 9;
-	private static final int START_PLAYER_1_Y = 9;
+	private static final int START_PLAYER_1_X = 8;
+	private static final int START_PLAYER_1_Y = 8;
 	private static final Direction START_PLAYER_1_D = Direction.DOWN;
 	
 	public VirusGame (ArrayList<ArrayList<GeneticStep>> geneticCodes) {
@@ -25,27 +25,29 @@ public class VirusGame {
 		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_0_X, START_PLAYER_0_Y), START_PLAYER_0_D));
 		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), START_PLAYER_1_D));
 		
+		System.out.println(this.bank.get(0));
+		
 		this.map = new Hashtable<Coordinates, Virus>();
 		this.map.put(new Coordinates(START_PLAYER_0_X, START_PLAYER_0_Y), this.bank.get(0));
 		this.map.put(new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), this.bank.get(1));
 		
 		this.scores = new ArrayList<Integer>();
 		
-		geneticCodes = new ArrayList<ArrayList<GeneticStep>>();
+		this.geneticCodes = new ArrayList<ArrayList<GeneticStep>>();
 		for (int i = 0 ; i != geneticCodes.size() ; i++) {
 			this.geneticCodes.add(new ArrayList<GeneticStep>());
-			for (int j = 0 ; j != geneticCodes.get(i).size() ; j++) {
-				this.geneticCodes.get(i).add(geneticCodes.get(i).get(j));
+			ArrayList<GeneticStep> code = geneticCodes.get(i);
+			for (int j = 0 ; j != code.size() ; j++) {
+				this.geneticCodes.get(i).add(code.get(j));
 			}
 		}
 	}
 	
 	public boolean emptyCell(Coordinates c) {
-		return !map.contains(c);
+		return !map.containsKey(c);
 	}
 	
 	public int cellPlayer(Coordinates c) {
-		System.out.println("Bonjour");
 		return map.get(c).player();
 	}
 	
@@ -77,7 +79,7 @@ public class VirusGame {
 			if (!v.waiting()) {
 				GeneticStep s = geneticCodes.get(v.player()).get(v.step());
 				if (GeneticStep.MOVE.equals(s)) 
-					v.move(1);
+					this.move(v);
 				else if (GeneticStep.TURN_R.equals(s))
 					v.turnR();
 				else if (GeneticStep.TURN_L.equals(s))
@@ -88,14 +90,45 @@ public class VirusGame {
 		timer++;
 	}
 	
+	private void move(Virus v) {
+		if (Direction.RIGHT.equals(v.direction())) {
+			if (v.coordinates().x() != this.mapMaxX() && 
+					this.emptyCell(new Coordinates(v.coordinates().x() + 1, v.coordinates().y()))) {
+				this.map.remove(v.coordinates());
+				v.coordinates().setX(v.coordinates().x() + 1);
+				this.map.put(v.coordinates(), v);
+			}
+		}
+		else if (Direction.UP.equals(v.direction())) {
+			if (v.coordinates().y() != this.mapMinY() && 
+					this.emptyCell(new Coordinates(v.coordinates().x(), v.coordinates().y() - 1))) {
+				this.map.remove(v.coordinates());
+				v.coordinates().setY(v.coordinates().y() - 1);
+				this.map.put(v.coordinates(), v);
+			}
+		}
+		else if (Direction.LEFT.equals(v.direction())) {
+			if (v.coordinates().x() != this.mapMinX() && 
+					this.emptyCell(new Coordinates(v.coordinates().x() - 1, v.coordinates().y()))) {
+				this.map.remove(v.coordinates());
+				v.coordinates().setX(v.coordinates().x() - 1);
+				this.map.put(v.coordinates(), v);
+			}
+		}
+		else if (Direction.DOWN.equals(v.direction())) {
+			if (v.coordinates().y() != this.mapMaxY() && 
+					this.emptyCell(new Coordinates(v.coordinates().x(), v.coordinates().y() + 1))) {
+				this.map.remove(v.coordinates());
+				v.coordinates().setY(v.coordinates().y() + 1);
+				this.map.put(v.coordinates(), v);
+			}
+		}
+	}
+	
 	public boolean gameOver() {
 		return timer >= TIME_OUT;
 	}
 
-	// Retourne 0 si on est encore en train de jouer
-	// 1 si le joueur 1 a gagné
-	// 2 si le joueur 2 a gagné
-	// X si le joueur X a gagné
 	// Gérer le cas d'égalité
 	// Requires gameOver()
 	public int winner() {
