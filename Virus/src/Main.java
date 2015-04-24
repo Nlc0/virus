@@ -14,13 +14,6 @@ public class Main {
 		codes.add(geneticCode);
 		VirusGame game = new VirusGame(codes);
 		
-		Coordinates c = new Coordinates(1,1);
-		
-		//System.out.println(game.cellPlayer(c));
-
-		printMap(game);
-		
-		
 		while (!game.gameOver()) {
 			printMap(game);
 			System.out.println("");

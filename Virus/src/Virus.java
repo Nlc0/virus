@@ -20,26 +20,40 @@ public class Virus {
 
 	public Direction direction() { return this.direction; }
 	
+	public void waitXTurns(int waitTime) { this.waitTime = waitTime; }
+	
 	public void turnR() {
-		if (Direction.RIGHT.equals(direction))
+		switch (direction) {
+		case RIGHT:
 			direction = Direction.DOWN;
-		else if (Direction.UP.equals(direction))
+			break;
+		case UP:
 			direction = Direction.RIGHT;
-		else if (Direction.LEFT.equals(direction))
+			break;
+		case LEFT:
 			direction = Direction.UP;
-		else if (Direction.DOWN.equals(direction))
+			break;
+		case DOWN:
 			direction = Direction.LEFT;
+			break;
+	}
 	}
 	
 	public void turnL() {
-		if (Direction.RIGHT.equals(direction))
-			direction = Direction.UP;
-		else if (Direction.UP.equals(direction))
-			direction = Direction.LEFT;
-		else if (Direction.LEFT.equals(direction))
-			direction = Direction.DOWN;
-		else if (Direction.DOWN.equals(direction))
-			direction = Direction.RIGHT;
+		switch (direction) {
+			case RIGHT:
+				direction = Direction.UP;
+				break;
+			case UP:
+				direction = Direction.LEFT;
+				break;
+			case LEFT:
+				direction = Direction.DOWN;
+				break;
+			case DOWN:
+				direction = Direction.RIGHT;
+				break;
+		}
 	}
 	
 	public void progress() { 

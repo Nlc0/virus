@@ -11,25 +11,15 @@ public class VirusGame {
 	
 	private static final int START_PLAYER_0_X = 1;
 	private static final int START_PLAYER_0_Y = 1;
-	private static final Direction START_PLAYER_0_D = Direction.UP;
+	private static final Direction START_PLAYER_0_D = Direction.DOWN;
 	
 	private static final int START_PLAYER_1_X = 8;
 	private static final int START_PLAYER_1_Y = 8;
-	private static final Direction START_PLAYER_1_D = Direction.DOWN;
+	private static final Direction START_PLAYER_1_D = Direction.UP;
 	
 	public VirusGame (ArrayList<ArrayList<GeneticStep>> geneticCodes) {
 		timer = 0;
 		nbPlayers = geneticCodes.size();
-		
-		this.bank = new LinkedList<Virus>();
-		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_0_X, START_PLAYER_0_Y), START_PLAYER_0_D));
-		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), START_PLAYER_1_D));
-		
-		System.out.println(this.bank.get(0));
-		
-		this.map = new Hashtable<Coordinates, Virus>();
-		this.map.put(new Coordinates(START_PLAYER_0_X, START_PLAYER_0_Y), this.bank.get(0));
-		this.map.put(new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), this.bank.get(1));
 		
 		this.scores = new ArrayList<Integer>();
 		
@@ -41,6 +31,18 @@ public class VirusGame {
 				this.geneticCodes.get(i).add(code.get(j));
 			}
 		}
+		
+		this.bank = new LinkedList<Virus>();
+		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_0_X, START_PLAYER_0_Y), START_PLAYER_0_D));
+		this.bank.get(0).waitXTurns(this.geneticCodes.get(0).get(0).waitTime());
+		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), START_PLAYER_1_D));
+		this.bank.get(1).waitXTurns(this.geneticCodes.get(1).get(0).waitTime());
+		
+		System.out.println(this.bank.get(0));
+		
+		this.map = new Hashtable<Coordinates, Virus>();
+		this.map.put(new Coordinates(START_PLAYER_0_X, START_PLAYER_0_Y), this.bank.get(0));
+		this.map.put(new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), this.bank.get(1));
 	}
 	
 	public boolean emptyCell(Coordinates c) {
@@ -78,50 +80,60 @@ public class VirusGame {
 		for (Virus v : bank ) {
 			if (!v.waiting()) {
 				GeneticStep s = geneticCodes.get(v.player()).get(v.step());
-				if (GeneticStep.MOVE.equals(s)) 
-					this.move(v);
-				else if (GeneticStep.TURN_R.equals(s))
-					v.turnR();
-				else if (GeneticStep.TURN_L.equals(s))
-					v.turnL();
+				switch(s) {
+					case MOVE:
+						this.move(v);
+						break;
+					case TURN_R:
+						v.turnR();
+						break;
+					case TURN_L:	
+						v.turnL();
+						break;
+				}
+				v.progress();
+				v.waitXTurns(geneticCodes.get(v.player()).get(v.step()).waitTime());
 			}
-			v.progress();
+			else
+				v.progress();
 		}
 		timer++;
 	}
 	
 	private void move(Virus v) {
-		if (Direction.RIGHT.equals(v.direction())) {
-			if (v.coordinates().x() != this.mapMaxX() && 
-					this.emptyCell(new Coordinates(v.coordinates().x() + 1, v.coordinates().y()))) {
-				this.map.remove(v.coordinates());
-				v.coordinates().setX(v.coordinates().x() + 1);
-				this.map.put(v.coordinates(), v);
-			}
-		}
-		else if (Direction.UP.equals(v.direction())) {
-			if (v.coordinates().y() != this.mapMinY() && 
-					this.emptyCell(new Coordinates(v.coordinates().x(), v.coordinates().y() - 1))) {
-				this.map.remove(v.coordinates());
-				v.coordinates().setY(v.coordinates().y() - 1);
-				this.map.put(v.coordinates(), v);
-			}
-		}
-		else if (Direction.LEFT.equals(v.direction())) {
-			if (v.coordinates().x() != this.mapMinX() && 
-					this.emptyCell(new Coordinates(v.coordinates().x() - 1, v.coordinates().y()))) {
-				this.map.remove(v.coordinates());
-				v.coordinates().setX(v.coordinates().x() - 1);
-				this.map.put(v.coordinates(), v);
-			}
-		}
-		else if (Direction.DOWN.equals(v.direction())) {
-			if (v.coordinates().y() != this.mapMaxY() && 
-					this.emptyCell(new Coordinates(v.coordinates().x(), v.coordinates().y() + 1))) {
-				this.map.remove(v.coordinates());
-				v.coordinates().setY(v.coordinates().y() + 1);
-				this.map.put(v.coordinates(), v);
-			}
+		switch (v.direction()) {
+			case RIGHT:
+				if (v.coordinates().x() != this.mapMaxX() && 
+						this.emptyCell(new Coordinates(v.coordinates().x() + 1, v.coordinates().y()))) {
+					this.map.remove(v.coordinates());
+					v.coordinates().setX(v.coordinates().x() + 1);
+					this.map.put(v.coordinates(), v);
+					break;
+				}
+			case UP:
+				if (v.coordinates().y() != this.mapMinY() && 
+						this.emptyCell(new Coordinates(v.coordinates().x(), v.coordinates().y() - 1))) {
+					this.map.remove(v.coordinates());
+					v.coordinates().setY(v.coordinates().y() - 1);
+					this.map.put(v.coordinates(), v);
+				}
+				break;
+			case LEFT:
+				if (v.coordinates().x() != this.mapMinX() && 
+						this.emptyCell(new Coordinates(v.coordinates().x() - 1, v.coordinates().y()))) {
+					this.map.remove(v.coordinates());
+					v.coordinates().setX(v.coordinates().x() - 1);
+					this.map.put(v.coordinates(), v);
+				}
+				break;
+			case DOWN:
+				if (v.coordinates().y() != this.mapMaxY() && 
+						this.emptyCell(new Coordinates(v.coordinates().x(), v.coordinates().y() + 1))) {
+					this.map.remove(v.coordinates());
+					v.coordinates().setY(v.coordinates().y() + 1);
+					this.map.put(v.coordinates(), v);
+				}
+				break;
 		}
 	}
 	
