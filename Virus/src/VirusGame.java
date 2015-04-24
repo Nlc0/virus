@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 // TODO Gérer les teams
 public class VirusGame {
-	private static final int TIME_OUT = 200;
+	private static final int TIME_OUT = 400;
 	private static final int MAP_WIDTH = 30;
 	private static final int MAP_HEIGHT = 30;
 	
@@ -22,6 +22,8 @@ public class VirusGame {
 		nbPlayers = geneticCodes.size();
 		
 		this.scores = new ArrayList<Integer>();
+		this.scores.add(1);
+		this.scores.add(1);
 		
 		this.geneticCodes = new ArrayList<ArrayList<GeneticStep>>();
 		for (int i = 0 ; i != geneticCodes.size() ; i++) {
@@ -103,6 +105,10 @@ public class VirusGame {
 		timer++;
 	}
 	
+	public int score(int player) {
+		return this.scores.get(player);
+	}
+	
 	private void move(Virus v) {
 		Coordinates dest = v.coordinates().clone();
 		switch (v.direction()) {
@@ -146,8 +152,10 @@ public class VirusGame {
 		if (dest.isInRect(new Coordinates(this.mapMinX(), this.mapMinY()), new Coordinates(this.mapMaxX(), this.mapMaxY()))
 				&& emptyCell(dest)) {
 			Virus v2 = new Virus(this, v.player(), dest, v.direction());
+			v2.waitXTurns(this.geneticCodes.get(v2.player()).get(v2.step()).waitTime());
 			this.bank.add(v2);
 			this.map.put(dest, v2);
+			this.scores.set(v2.player(), this.scores.get(v2.player()) + 1);
 		}
 	}
 	

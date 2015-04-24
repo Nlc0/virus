@@ -6,8 +6,11 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ArrayList<GeneticStep> geneticCode = new ArrayList<GeneticStep>();
+		geneticCode.add(GeneticStep.TURN_L);
 		geneticCode.add(GeneticStep.CLONE);
 		geneticCode.add(GeneticStep.TURN_R);
+		geneticCode.add(GeneticStep.MOVE);
+		geneticCode.add(GeneticStep.CLONE);
 		
 		ArrayList<GeneticStep> geneticCode2 = new ArrayList<GeneticStep>();
 		geneticCode2.add(GeneticStep.MOVE);
@@ -21,10 +24,11 @@ public class Main {
 		
 		while (!game.gameOver()) {
 			printMap(game);
+			System.out.println("Score t0 : " + game.score(0) + " Score t1 : " + game.score(1));
 			System.out.println("");
 			game.play();
 			try {
-				Thread.sleep(300);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
