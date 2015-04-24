@@ -6,7 +6,7 @@ public class Virus {
 		this.coordinates = coordinates.clone();
 		this.direction = direction;
 		this.game = game;
-		this.waitTime = 0;
+		this.waitTime = 1;
 		this.step = 0;
 	}
 	
@@ -20,7 +20,11 @@ public class Virus {
 
 	public Direction direction() { return this.direction; }
 	
-	public void waitXTurns(int waitTime) { this.waitTime = waitTime; }
+	public void waitXTurns(int waitTime) { this.waitTime += waitTime; }
+	
+	public void setCoordinates(Coordinates c) {
+		this.coordinates = c.clone();
+	}
 	
 	public void turnR() {
 		switch (direction) {

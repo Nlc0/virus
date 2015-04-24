@@ -8,16 +8,28 @@ public class Main {
 		ArrayList<GeneticStep> geneticCode = new ArrayList<GeneticStep>();
 		geneticCode.add(GeneticStep.MOVE);
 		geneticCode.add(GeneticStep.TURN_R);
+		geneticCode.add(GeneticStep.CLONE);
+		
+		ArrayList<GeneticStep> geneticCode2 = new ArrayList<GeneticStep>();
+		geneticCode2.add(GeneticStep.MOVE);
+		geneticCode2.add(GeneticStep.CLONE);
+		geneticCode2.add(GeneticStep.TURN_R);
 		
 		ArrayList<ArrayList<GeneticStep>> codes = new ArrayList<ArrayList<GeneticStep>>();
 		codes.add(geneticCode);
-		codes.add(geneticCode);
+		codes.add(geneticCode2);
 		VirusGame game = new VirusGame(codes);
 		
 		while (!game.gameOver()) {
 			printMap(game);
 			System.out.println("");
 			game.play();
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -26,7 +38,7 @@ public class Main {
 			for (int j = game.mapMinX() ; j != game.mapMaxX() + 1 ; j++) {
 				Coordinates c = new Coordinates(j, i);
 				if (game.emptyCell(c))
-					System.out.print("X");
+					System.out.print(" ");
 				else
 					System.out.print(game.cellPlayer(c));
 			}

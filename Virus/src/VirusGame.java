@@ -5,16 +5,16 @@ import java.util.LinkedList;
 
 // TODO Gérer les teams
 public class VirusGame {
-	private static final int TIME_OUT = 10;
-	private static final int MAP_WIDTH = 10;
-	private static final int MAP_HEIGHT = 10;
+	private static final int TIME_OUT = 200;
+	private static final int MAP_WIDTH = 50;
+	private static final int MAP_HEIGHT = 50;
 	
 	private static final int START_PLAYER_0_X = 1;
 	private static final int START_PLAYER_0_Y = 1;
 	private static final Direction START_PLAYER_0_D = Direction.DOWN;
 	
-	private static final int START_PLAYER_1_X = 8;
-	private static final int START_PLAYER_1_Y = 8;
+	private static final int START_PLAYER_1_X = 48;
+	private static final int START_PLAYER_1_Y = 48;
 	private static final Direction START_PLAYER_1_D = Direction.UP;
 	
 	public VirusGame (ArrayList<ArrayList<GeneticStep>> geneticCodes) {
@@ -35,7 +35,7 @@ public class VirusGame {
 		this.bank = new LinkedList<Virus>();
 		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_0_X, START_PLAYER_0_Y), START_PLAYER_0_D));
 		this.bank.get(0).waitXTurns(this.geneticCodes.get(0).get(0).waitTime());
-		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), START_PLAYER_1_D));
+		this.bank.add(new Virus(this, 1, new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), START_PLAYER_1_D));
 		this.bank.get(1).waitXTurns(this.geneticCodes.get(1).get(0).waitTime());
 		
 		System.out.println(this.bank.get(0));
@@ -65,8 +65,7 @@ public class VirusGame {
 		return this.geneticCodes.get(player).size();
 	}
 	
-	
-	// Ces quatres fonctions sont utilisées par Virus
+	// Ces quatres fonctions sont utilisées par this.move(Virus) pour savoir si on a atteint le bord de la map
 	public int mapMinX() { return 0; }
 	
 	public int mapMaxX() { return MAP_WIDTH - 1; }
@@ -77,7 +76,8 @@ public class VirusGame {
 	
 	// Requires !gameOver()
 	public void play() {
-		for (Virus v : bank ) {
+		for (int i = 0 ; i != this.bank.size() ; i++ ) {
+			Virus v = this.bank.get(i);
 			if (!v.waiting()) {
 				GeneticStep s = geneticCodes.get(v.player()).get(v.step());
 				switch(s) {
@@ -90,6 +90,9 @@ public class VirusGame {
 					case TURN_L:	
 						v.turnL();
 						break;
+					case CLONE:
+						this.clone(v);
+						break;
 				}
 				v.progress();
 				v.waitXTurns(geneticCodes.get(v.player()).get(v.step()).waitTime());
@@ -101,39 +104,50 @@ public class VirusGame {
 	}
 	
 	private void move(Virus v) {
+		Coordinates dest = v.coordinates().clone();
 		switch (v.direction()) {
 			case RIGHT:
-				if (v.coordinates().x() != this.mapMaxX() && 
-						this.emptyCell(new Coordinates(v.coordinates().x() + 1, v.coordinates().y()))) {
-					this.map.remove(v.coordinates());
-					v.coordinates().setX(v.coordinates().x() + 1);
-					this.map.put(v.coordinates(), v);
-					break;
-				}
+				dest.setX(dest.x() + 1);
+				break;
 			case UP:
-				if (v.coordinates().y() != this.mapMinY() && 
-						this.emptyCell(new Coordinates(v.coordinates().x(), v.coordinates().y() - 1))) {
-					this.map.remove(v.coordinates());
-					v.coordinates().setY(v.coordinates().y() - 1);
-					this.map.put(v.coordinates(), v);
-				}
+				dest.setY(dest.y() - 1);
 				break;
 			case LEFT:
-				if (v.coordinates().x() != this.mapMinX() && 
-						this.emptyCell(new Coordinates(v.coordinates().x() - 1, v.coordinates().y()))) {
-					this.map.remove(v.coordinates());
-					v.coordinates().setX(v.coordinates().x() - 1);
-					this.map.put(v.coordinates(), v);
-				}
+				dest.setX(dest.x() - 1);
 				break;
 			case DOWN:
-				if (v.coordinates().y() != this.mapMaxY() && 
-						this.emptyCell(new Coordinates(v.coordinates().x(), v.coordinates().y() + 1))) {
-					this.map.remove(v.coordinates());
-					v.coordinates().setY(v.coordinates().y() + 1);
-					this.map.put(v.coordinates(), v);
-				}
+				dest.setY(dest.y() + 1);
 				break;
+		}
+		if (dest.isInRect(new Coordinates(this.mapMinX(), this.mapMinY()), new Coordinates(this.mapMaxX(), this.mapMaxY()))
+				&& emptyCell(dest)) {
+			this.map.remove(v.coordinates());
+			v.setCoordinates(dest);
+			this.map.put(v.coordinates(), v);
+		}
+	}
+	
+	private void clone(Virus v) {
+		Coordinates dest = v.coordinates().clone();
+		switch (v.direction()) {
+			case RIGHT:
+				dest.setX(dest.x() + 1);
+				break;
+			case UP:
+				dest.setY(dest.y() - 1);
+				break;
+			case LEFT:
+				dest.setX(dest.x() - 1);
+				break;
+			case DOWN:
+				dest.setY(dest.y() + 1);
+				break;
+		}
+		if (dest.isInRect(new Coordinates(this.mapMinX(), this.mapMinY()), new Coordinates(this.mapMaxX(), this.mapMaxY()))
+				&& emptyCell(dest)) {
+			Virus v2 = new Virus(this, v.player(), dest, v.direction());
+			this.bank.add(v2);
+			this.map.put(dest, v2);
 		}
 	}
 	

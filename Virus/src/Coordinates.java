@@ -14,6 +14,13 @@ public class Coordinates {
 	
 	public void setY(int y) { this.y = y; }
 	
+	public boolean isInRect(Coordinates minCorner, Coordinates maxCorner) {
+		return this.x >= minCorner.x() &&
+				this.x <= maxCorner.x() &&
+				this.y >= minCorner.y() &&
+				this.y <= maxCorner.y();
+	}
+	
 	@Override
 	public Coordinates clone() {
 		return new Coordinates(this.x, this.y);
