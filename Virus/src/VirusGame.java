@@ -95,6 +95,9 @@ public class VirusGame {
 					case CLONE:
 						this.clone(v);
 						break;
+					case EAT:
+						this.eat(v);
+						break;
 				}
 				v.progress();
 				v.waitXTurns(geneticCodes.get(v.player()).get(v.step()).waitTime());
@@ -159,11 +162,36 @@ public class VirusGame {
 		}
 	}
 	
+	private void eat(Virus v) {
+		Coordinates dest = v.coordinates().clone();
+		switch (v.direction()) {
+			case RIGHT:
+				dest.setX(dest.x() + 1);
+				break;
+			case UP:
+				dest.setY(dest.y() - 1);
+				break;
+			case LEFT:
+				dest.setX(dest.x() - 1);
+				break;
+			case DOWN:
+				dest.setY(dest.y() + 1);
+				break;
+		}
+		if (dest.isInRect(new Coordinates(this.mapMinX(), this.mapMinY()), new Coordinates(this.mapMaxX(), this.mapMaxY()))
+				&& !emptyCell(dest) && this.cellPlayer(dest) != v.player()) {
+			Virus v2 = this.map.get(dest);
+			this.scores.set(v2.player(), this.scores.get(v2.player()) - 1);
+			this.bank.remove(v2);
+			this.map.remove(dest);
+		}
+	}
+	
 	public boolean gameOver() {
 		return timer >= TIME_OUT;
 	}
 
-	// Gérer le cas d'égalité
+	// TODO Gérer le cas d'égalité
 	// Requires gameOver()
 	public int winner() {
 		int max = 0;

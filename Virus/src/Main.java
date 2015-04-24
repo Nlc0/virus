@@ -6,11 +6,11 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ArrayList<GeneticStep> geneticCode = new ArrayList<GeneticStep>();
-		geneticCode.add(GeneticStep.TURN_L);
+		geneticCode.add(GeneticStep.MOVE);
+		geneticCode.add(GeneticStep.EAT);
 		geneticCode.add(GeneticStep.CLONE);
 		geneticCode.add(GeneticStep.TURN_R);
-		geneticCode.add(GeneticStep.MOVE);
-		geneticCode.add(GeneticStep.CLONE);
+
 		
 		ArrayList<GeneticStep> geneticCode2 = new ArrayList<GeneticStep>();
 		geneticCode2.add(GeneticStep.MOVE);
