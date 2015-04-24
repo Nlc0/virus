@@ -1,21 +1,41 @@
-import javax.swing.JFrame;
+import java.util.ArrayList;
 
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		JFrame window = new JFrame();
-		window.setVisible(true);
-		//Définit un titre pour notre fenêtre
-		window.setTitle("Ma première fenêtre Java");
-		//Définit sa taille : 400 pixels de large et 100 pixels de haut
-		window.setSize(400, 100);
-		//Nous demandons maintenant à notre objet de se positionner au centre
-		window.setLocationRelativeTo(null);
-		//Termine le processus lorsqu'on clique sur la croix rouge
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//Et enfin, la rendre visible        
-		window.setVisible(true);
+		ArrayList<GeneticStep> geneticCode = new ArrayList<GeneticStep>();
+		geneticCode.add(GeneticStep.MOVE);
+		geneticCode.add(GeneticStep.TURN_R);
+		
+		ArrayList<ArrayList<GeneticStep>> codes = new ArrayList<ArrayList<GeneticStep>>();
+		codes.add(geneticCode);
+		codes.add(geneticCode);
+		VirusGame game = new VirusGame(codes);
+		
+		Coordinates c = new Coordinates(1,1);
+		
+		System.out.println(game.cellPlayer(c));
+
+		printMap(game);
+		
+		/*while (!game.gameOver()) {
+			printMap(game);
+			game.play();
+		}*/
+	}
+	
+	public static void printMap(VirusGame game) {
+		for (int i = game.mapMinX() ; i != game.mapMaxX() + 1 ; i++) {
+			for (int j = game.mapMinY() ; j != game.mapMaxY() + 1 ; j++) {
+				Coordinates c = new Coordinates(j, i);
+				if (game.emptyCell(c))
+					System.out.print(" ");
+				else
+					System.out.print(game.cellPlayer(c));
+			}
+			System.out.println("");
+		}
 	}
 }

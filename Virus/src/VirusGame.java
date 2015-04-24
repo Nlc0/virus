@@ -5,17 +5,31 @@ import java.util.LinkedList;
 
 // TODO Gérer les teams
 public class VirusGame {
-	private static final int TIME_OUT = 100;
+	private static final int TIME_OUT = 10;
+	private static final int MAP_WIDTH = 10;
+	private static final int MAP_HEIGHT = 10;
+	
+	private static final int START_PLAYER_0_X = 1;
+	private static final int START_PLAYER_0_Y = 1;
+	private static final Direction START_PLAYER_0_D = Direction.UP;
+	
+	private static final int START_PLAYER_1_X = 9;
+	private static final int START_PLAYER_1_Y = 9;
+	private static final Direction START_PLAYER_1_D = Direction.DOWN;
 	
 	public VirusGame (ArrayList<ArrayList<GeneticStep>> geneticCodes) {
 		timer = 0;
 		nbPlayers = geneticCodes.size();
 		
-		private Hashtable<Coordinates, Virus> map;
+		this.bank = new LinkedList<Virus>();
+		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_0_X, START_PLAYER_0_Y), START_PLAYER_0_D));
+		this.bank.add(new Virus(this, 0, new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), START_PLAYER_1_D));
 		
-		private LinkedList<Virus> bank;
+		this.map = new Hashtable<Coordinates, Virus>();
+		this.map.put(new Coordinates(START_PLAYER_0_X, START_PLAYER_0_Y), this.bank.get(0));
+		this.map.put(new Coordinates(START_PLAYER_1_X, START_PLAYER_1_Y), this.bank.get(1));
 		
-		ArrayList<Integer> scores = new ArrayList<Integer>();
+		this.scores = new ArrayList<Integer>();
 		
 		geneticCodes = new ArrayList<ArrayList<GeneticStep>>();
 		for (int i = 0 ; i != geneticCodes.size() ; i++) {
@@ -31,6 +45,7 @@ public class VirusGame {
 	}
 	
 	public int cellPlayer(Coordinates c) {
+		System.out.println("Bonjour");
 		return map.get(c).player();
 	}
 	
@@ -41,6 +56,20 @@ public class VirusGame {
 	public int nbPlayers() {
 		return nbPlayers;
 	}
+	
+	public int nbSteps(int player) {
+		return this.geneticCodes.get(player).size();
+	}
+	
+	
+	// Ces quatres fonctions sont utilisées par Virus
+	public int mapMinX() { return 0; }
+	
+	public int mapMaxX() { return MAP_WIDTH - 1; }
+	
+	public int mapMinY() { return 0; }
+	
+	public int mapMaxY() { return MAP_HEIGHT - 1; }
 	
 	// Requires !gameOver()
 	public void play() {
