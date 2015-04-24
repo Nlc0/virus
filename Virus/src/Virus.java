@@ -10,6 +10,25 @@ public class Virus {
 		this.step = 0;
 	}
 	
+	public Coordinates frontCell() {
+		Coordinates dest = this.coordinates().clone();
+		switch (this.direction()) {
+			case RIGHT:
+				dest.setX(dest.x() + 1);
+				break;
+			case UP:
+				dest.setY(dest.y() - 1);
+				break;
+			case LEFT:
+				dest.setX(dest.x() - 1);
+				break;
+			case DOWN:
+				dest.setY(dest.y() + 1);
+				break;
+		}
+		return dest;
+	}
+	
 	public int player() { return player; }
 	
 	public boolean waiting() { return waitTime > 0; }

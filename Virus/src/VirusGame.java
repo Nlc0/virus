@@ -113,21 +113,7 @@ public class VirusGame {
 	}
 	
 	private void move(Virus v) {
-		Coordinates dest = v.coordinates().clone();
-		switch (v.direction()) {
-			case RIGHT:
-				dest.setX(dest.x() + 1);
-				break;
-			case UP:
-				dest.setY(dest.y() - 1);
-				break;
-			case LEFT:
-				dest.setX(dest.x() - 1);
-				break;
-			case DOWN:
-				dest.setY(dest.y() + 1);
-				break;
-		}
+		Coordinates dest = v.frontCell();
 		if (dest.isInRect(new Coordinates(this.mapMinX(), this.mapMinY()), new Coordinates(this.mapMaxX(), this.mapMaxY()))
 				&& emptyCell(dest)) {
 			this.map.remove(v.coordinates());
@@ -137,21 +123,7 @@ public class VirusGame {
 	}
 	
 	private void clone(Virus v) {
-		Coordinates dest = v.coordinates().clone();
-		switch (v.direction()) {
-			case RIGHT:
-				dest.setX(dest.x() + 1);
-				break;
-			case UP:
-				dest.setY(dest.y() - 1);
-				break;
-			case LEFT:
-				dest.setX(dest.x() - 1);
-				break;
-			case DOWN:
-				dest.setY(dest.y() + 1);
-				break;
-		}
+		Coordinates dest = v.frontCell();
 		if (dest.isInRect(new Coordinates(this.mapMinX(), this.mapMinY()), new Coordinates(this.mapMaxX(), this.mapMaxY()))
 				&& emptyCell(dest)) {
 			Virus v2 = new Virus(this, v.player(), dest, v.direction());
@@ -163,21 +135,7 @@ public class VirusGame {
 	}
 	
 	private void eat(Virus v) {
-		Coordinates dest = v.coordinates().clone();
-		switch (v.direction()) {
-			case RIGHT:
-				dest.setX(dest.x() + 1);
-				break;
-			case UP:
-				dest.setY(dest.y() - 1);
-				break;
-			case LEFT:
-				dest.setX(dest.x() - 1);
-				break;
-			case DOWN:
-				dest.setY(dest.y() + 1);
-				break;
-		}
+		Coordinates dest = v.frontCell();
 		if (dest.isInRect(new Coordinates(this.mapMinX(), this.mapMinY()), new Coordinates(this.mapMaxX(), this.mapMaxY()))
 				&& !emptyCell(dest) && this.cellPlayer(dest) != v.player()) {
 			Virus v2 = this.map.get(dest);
