@@ -6,9 +6,8 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ArrayList<GeneticStep> geneticCode = new ArrayList<GeneticStep>();
-		geneticCode.add(GeneticStep.MOVE);
-		geneticCode.add(GeneticStep.TURN_R);
 		geneticCode.add(GeneticStep.CLONE);
+		geneticCode.add(GeneticStep.TURN_R);
 		
 		ArrayList<GeneticStep> geneticCode2 = new ArrayList<GeneticStep>();
 		geneticCode2.add(GeneticStep.MOVE);

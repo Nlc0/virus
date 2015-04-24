@@ -6,15 +6,15 @@ import java.util.LinkedList;
 // TODO Gérer les teams
 public class VirusGame {
 	private static final int TIME_OUT = 200;
-	private static final int MAP_WIDTH = 50;
-	private static final int MAP_HEIGHT = 50;
+	private static final int MAP_WIDTH = 30;
+	private static final int MAP_HEIGHT = 30;
 	
 	private static final int START_PLAYER_0_X = 1;
 	private static final int START_PLAYER_0_Y = 1;
 	private static final Direction START_PLAYER_0_D = Direction.DOWN;
 	
-	private static final int START_PLAYER_1_X = 48;
-	private static final int START_PLAYER_1_Y = 48;
+	private static final int START_PLAYER_1_X = 28;
+	private static final int START_PLAYER_1_Y = 28;
 	private static final Direction START_PLAYER_1_D = Direction.UP;
 	
 	public VirusGame (ArrayList<ArrayList<GeneticStep>> geneticCodes) {
