@@ -6,10 +6,14 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ArrayList<GeneticStep> geneticCode = new ArrayList<GeneticStep>();
-		geneticCode.add(GeneticStep.MOVE);
 		geneticCode.add(GeneticStep.EAT);
-		geneticCode.add(GeneticStep.CLONE);
+		geneticCode.add(GeneticStep.MOVE);
 		geneticCode.add(GeneticStep.TURN_R);
+		geneticCode.add(GeneticStep.EAT);
+		geneticCode.add(GeneticStep.MOVE);
+		geneticCode.add(GeneticStep.TURN_R);
+		geneticCode.add(GeneticStep.TURN_R);
+		geneticCode.add(GeneticStep.CLONE);
 
 		
 		ArrayList<GeneticStep> geneticCode2 = new ArrayList<GeneticStep>();
@@ -24,7 +28,8 @@ public class Main {
 		
 		while (!game.gameOver()) {
 			printMap(game);
-			System.out.println("Score t0 : " + game.score(0) + " Score t1 : " + game.score(1));
+			System.out.println("Tour : " + game.time() + " Score t0 : " + game.score(0) + " Score t1 : " + game.score(1));
+			System.out.println("Team 0 : " + game.teamScore(0) + " Team 1 : " + game.teamScore(1));
 			System.out.println("");
 			game.play();
 			try {
