@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Virus</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="title_activity_vsettings">VSettingsActivity</string>
+    <string name="title_activity_vgenetic_codes">VGeneticCodesActivity</string>
+
+    <string name="v_home_screen_play_button">Play !</string>
+    <string name="v_home_screen_settings_button">Settings</string>
+
+
+</resources>

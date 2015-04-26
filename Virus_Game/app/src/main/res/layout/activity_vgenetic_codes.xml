@@ -1,0 +1,67 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.palardnicolasgmail.virus.VGeneticCodesActivity">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+
+    <ImageView
+        android:id="@+id/geneticCodeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#00ff00"
+        />
+
+    <EditText
+        android:id="@+id/searchBarGeneticCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Looking for something ?"
+        android:textStyle="italic"
+        android:layout_below="@id/geneticCodeTitle"
+        />
+
+    <GridView
+        android:id="@+id/GeneticItems"
+        android:layout_below="@id/searchBarGeneticCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnWidth="80dp"
+        android:numColumns="auto_fit"
+        >
+    </GridView>
+
+    <Button
+        android:id="@+id/goButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/GeneticItems"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/abc_button_inset_horizontal_material"
+        android:layout_toLeftOf="@id/goButton"
+        android:layout_below="@id/GeneticItems"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:id="@+id/previewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/abc_button_inset_horizontal_material"
+        android:layout_below="@id/GeneticItems"
+        android:layout_toRightOf="@id/goButton"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,49 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VHomeActivity">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#ff00ff"
+        />
+
+    <ImageView
+        android:id="@+id/homeScreenTitle"
+        android:layout_width="500dp"
+        android:layout_height="200dp"
+        android:background="#00ff00"
+        />
+
+    <Space
+        android:id="@+id/spaceBetweenTitleAndButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_below="@id/homeScreenTitle"
+        />
+
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/v_home_screen_play_button"
+        android:textSize="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/spaceBetweenTitleAndButtons"
+        android:onClick="startGeneticCodesActivity"
+        />
+
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/v_home_screen_settings_button"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/playButton"
+        android:onClick="startSettingsActivity"
+        />
+
+</RelativeLayout>
